@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BlazorNative.Shared/BlazorNative.Shared.csproj" />
+    <Project Path="src/BlazorNative.WebKit/BlazorNative.WebKit.csproj" />
+    <Project Path="src/BlazorNative.macOS/BlazorNative.macOS.csproj" />
+    <Project Path="src/BlazorNative.iOS/BlazorNative.iOS.csproj" />
+  </Folder>
+</Solution>

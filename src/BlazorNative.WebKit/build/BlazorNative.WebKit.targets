@@ -1,0 +1,53 @@
+<Project>
+  <!--
+    Copies the app's resolved static web assets into the app bundle under wwwroot/:
+      - the app's own wwwroot/ (host page),
+      - _content/<library>/ of referenced Razor Class Libraries (CSS, images, scoped CSS bundles),
+      - _framework/blazor.webview.js and _framework/blazor.modules.json contributed by the
+        Microsoft.AspNetCore.Components.WebView package.
+
+    This is the job the .NET MAUI workload performs for BlazorWebView (target
+    "ConvertStaticWebAssetsToMauiAssets"). It relies on the Static Web Assets pipeline, so the
+    importing app project must use the Microsoft.NET.Sdk.Razor SDK.
+
+    Import from the app project:
+      <Import Project="../BlazorNative.WebKit/build/BlazorNative.WebKit.targets" />
+  -->
+  <PropertyGroup>
+    <BlazorNativeBundlePathPrefix Condition="'$(BlazorNativeBundlePathPrefix)' == ''">wwwroot</BlazorNativeBundlePathPrefix>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The Static Web Assets SDK adds **/*.json as Content (for appsettings files). That would copy the
+         asset catalog's Contents.json files into the bundle as plain files; keep them ImageAsset-only. -->
+    <Content Remove="**\*.xcassets\**" />
+  </ItemGroup>
+
+  <Target Name="_BlazorNativeBundleStaticWebAssets"
+          BeforeTargets="_CollectBundleResources"
+          DependsOnTargets="ResolveProjectReferences;ResolveBuildRelatedStaticWebAssets">
+
+    <ItemGroup>
+      <!-- Skip publish-only assets and pre-compressed alternates (.gz/.br); the app serves the originals. -->
+      <_BlazorNativeBuildAsset Include="@(StaticWebAsset)"
+                               Condition="'%(StaticWebAsset.AssetKind)' != 'Publish' and '%(StaticWebAsset.AssetTraitName)' != 'Content-Encoding'" />
+    </ItemGroup>
+
+    <!-- Turns BasePath + RelativePath into the final path, e.g. wwwroot/_framework/blazor.webview.js -->
+    <ComputeStaticWebAssetsTargetPaths Assets="@(_BlazorNativeBuildAsset)"
+                                       PathPrefix="$(BlazorNativeBundlePathPrefix)"
+                                       UseAlternatePathDirectorySeparator="true">
+      <Output TaskParameter="AssetsWithTargetPath" ItemName="_BlazorNativeAssetWithTargetPath" />
+    </ComputeStaticWebAssetsTargetPaths>
+
+    <ItemGroup>
+      <!-- The Razor SDK also lists wwwroot/** as Content, which the Apple SDK would bundle a second time. -->
+      <Content Remove="wwwroot\**" />
+      <BundleResource Include="@(_BlazorNativeAssetWithTargetPath)"
+                      LogicalName="%(_BlazorNativeAssetWithTargetPath.TargetPath)"
+                      Optimize="false" />
+    </ItemGroup>
+
+    <Message Importance="normal" Text="BlazorNative: bundling static web asset %(_BlazorNativeAssetWithTargetPath.TargetPath)" />
+  </Target>
+</Project>

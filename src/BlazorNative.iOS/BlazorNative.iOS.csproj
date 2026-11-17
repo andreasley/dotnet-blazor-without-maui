@@ -1,0 +1,30 @@
+<!-- The Razor SDK is used (like MAUI Blazor apps do) so that static web assets are resolved; see BlazorNative.WebKit.targets. -->
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <!-- Native iOS (UIKit) application. Shows the shared Blazor UI full screen. -->
+  <PropertyGroup>
+    <TargetFramework>net11.0-ios</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BlazorNative.iOS</RootNamespace>
+    <AssemblyName>BlazorNative</AssemblyName>
+    <ApplicationId>com.yourcompany.blazornative</ApplicationId>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <SupportedOSPlatformVersion>17.0</SupportedOSPlatformVersion>
+
+    <!-- Trimming: keep the default (SDK-only linking); see the macOS project for the reasoning. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../BlazorNative.Shared/BlazorNative.Shared.csproj" />
+    <ProjectReference Include="../BlazorNative.WebKit/BlazorNative.WebKit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="$(MicrosoftExtensionsVersion)" />
+  </ItemGroup>
+
+  <!-- Bundles wwwroot/, _content/ of referenced Razor Class Libraries and _framework/blazor.webview.js into the app. -->
+  <Import Project="../BlazorNative.WebKit/build/BlazorNative.WebKit.targets" />
+
+</Project>

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <!--
+    Platform-independent Razor Class Library.
+    Contains the Blazor components, the host page (wwwroot/index.html), CSS and the
+    service abstractions that the native apps implement (IPlatformInfo, INativeDialogs).
+    This project knows nothing about iOS, macOS or WebKit.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+    <RootNamespace>BlazorNative.Shared</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(AspNetCoreVersion)" />
+  </ItemGroup>
+
+</Project>

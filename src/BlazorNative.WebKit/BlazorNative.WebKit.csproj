@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Hosts Blazor inside a WKWebView, on iOS (UIKit) and macOS (AppKit).
+
+    This is the piece that .NET MAUI normally provides through its BlazorWebView control.
+    Here it is implemented directly on top of the public Microsoft.AspNetCore.Components.WebView
+    package (the shared engine behind every BlazorWebView: MAUI, WPF and WinForms) and the
+    .NET for iOS / .NET for macOS bindings of WebKit. No MAUI assembly is referenced.
+  -->
+  <PropertyGroup>
+    <TargetFrameworks>net11.0-ios;net11.0-macos</TargetFrameworks>
+    <RootNamespace>BlazorNative.WebKit</RootNamespace>
+    <SupportedOSPlatformVersion Condition="'$(TargetPlatformIdentifier)' == 'ios'">17.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="'$(TargetPlatformIdentifier)' == 'macos'">14.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="$(MicrosoftExtensionsVersion)" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,61 @@
+@page "/"
+@inject IPlatformInfo Platform
+@inject INativeDialogs Dialogs
+@inject ILogger<Home> Logger
+
+<h1>Blazor, hosted natively</h1>
+
+<p>
+    This page is a Blazor component. It runs in-process in the .NET runtime of the native app
+    and is rendered into a <code>WKWebView</code>. There is no web server and no .NET MAUI involved.
+</p>
+
+<dl class="facts">
+    <dt>Platform</dt>
+    <dd>@Platform.PlatformName</dd>
+    <dt>OS version</dt>
+    <dd>@Platform.OperatingSystemVersion</dd>
+    <dt>Device</dt>
+    <dd>@Platform.DeviceDescription</dd>
+    <dt>.NET runtime</dt>
+    <dd>@Platform.RuntimeDescription</dd>
+</dl>
+
+<h2>Native interop</h2>
+<p>The button below calls a C# service that the host app implemented with <code>NSAlert</code> / <code>UIAlertController</code>.</p>
+
+<button class="btn" @onclick="ShowNativeAlertAsync" disabled="@_busy">Show native alert</button>
+
+@if (_alertCount > 0)
+{
+    <p class="muted">Native alert dismissed @_alertCount time(s).</p>
+}
+
+@code {
+    private bool _busy;
+    private int _alertCount;
+
+    private async Task ShowNativeAlertAsync()
+    {
+        _busy = true;
+        try
+        {
+            await Dialogs.ShowAlertAsync("Hello from Blazor", $"This alert is native UI, triggered from a Razor component on {Platform.PlatformName}.");
+            _alertCount++;
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        // Fires only after the JavaScript side acknowledged the render batch,
+        // so this line proves the full C# <-> WebView round trip works.
+        if (firstRender)
+        {
+            Logger.LogInformation("Home page rendered on {Platform}", Platform.PlatformName);
+        }
+    }
+}

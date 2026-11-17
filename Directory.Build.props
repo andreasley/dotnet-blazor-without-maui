@@ -1,0 +1,11 @@
+<Project>
+  <!-- Settings shared by every project in this repository. -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <!-- Version of the ASP.NET Core / Blazor packages. Must match the major version of the .NET SDK in use. -->
+    <AspNetCoreVersion>11.0.0</AspNetCoreVersion>
+    <MicrosoftExtensionsVersion>11.0.0</MicrosoftExtensionsVersion>
+  </PropertyGroup>
+</Project>

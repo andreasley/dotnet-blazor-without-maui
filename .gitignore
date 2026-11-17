@@ -1,0 +1,10 @@
+bin/
+obj/
+.tmp.nobackup/
+.DS_Store
+*.user
+.vs/
+.idea/
+.localmemory
+Package.swift
+.swiftpm

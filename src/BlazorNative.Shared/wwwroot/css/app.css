@@ -1,0 +1,72 @@
+:root {
+    color-scheme: light dark;
+    --accent: #5b4bd6;
+    --bg: Canvas;
+    --fg: CanvasText;
+    --muted: color-mix(in srgb, CanvasText 55%, Canvas);
+    --border: color-mix(in srgb, CanvasText 15%, Canvas);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.shell { display: flex; flex-direction: column; min-height: 100%; }
+
+.nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.nav .brand { font-weight: 600; margin-right: auto; }
+
+.nav a { color: var(--muted); text-decoration: none; padding: 0.25rem 0.5rem; border-radius: 6px; }
+.nav a.active { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+
+.content { padding: 1.25rem; max-width: 48rem; }
+
+h1 { font-size: 1.6rem; margin: 0 0 0.75rem; }
+h2 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }
+code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; }
+
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1rem; margin: 1rem 0; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; }
+
+.btn {
+    appearance: none;
+    border: 0;
+    border-radius: 8px;
+    padding: 0.55rem 1rem;
+    font: inherit;
+    color: white;
+    background: var(--accent);
+    cursor: pointer;
+}
+.btn:disabled { opacity: 0.5; cursor: default; }
+
+.muted { color: var(--muted); }
+
+#blazor-error-ui {
+    display: none;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    padding: 0.75rem 1.25rem;
+    background: lightyellow;
+    color: black;
+    border-top: 1px solid #ccc;
+}
+#blazor-error-ui .dismiss { cursor: pointer; position: absolute; right: 0.75rem; top: 0.5rem; }
